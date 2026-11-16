@@ -1,0 +1,9 @@
+{
+  "name": "design-sense-tools",
+  "private": true,
+  "type": "module",
+  "description": "load-budget: the measured gate for design-sense. playwright-core is pinned to 1.63.0 so it uses the cached chromium-1243 build.",
+  "dependencies": {
+    "playwright-core": "1.63.0"
+  }
+}

@@ -23,6 +23,8 @@ The script needs `python3` for the hooks and `node` for the `pre-pr` scripts. It
 | `pre-pr` skill | `~/.agents/skills/pre-pr` | Reviews a change an agent wrote before it becomes a PR. Type `$pre-pr`. |
 | `deepen` skill | `~/.agents/skills/deepen` | Makes a complex ask deeper before doing it. |
 | `humanizer` skill | `~/.agents/skills/humanizer` | Rewrites text that sounds like AI. A copy of `blader/humanizer` (MIT). |
+| `design-sense` skill | `~/.agents/skills/design-sense` | The three design laws and their gates, for pages a visitor judges at a glance. It sends app screens elsewhere. |
+| `first-impression`, `cognitive-load`, `peak-end` skills | `~/.agents/skills/<name>` | One skill per design law. `design-sense` routes to them. |
 | `deepen-gate.py` | runs on every prompt | Flags a complex ask and points Codex at `deepen`. `deep:` forces it, `quick:` skips it. |
 | `design-nudge.py` | runs on every prompt | Adds the three design laws when the prompt is about a page. |
 | `humanizer-gate.py prompt` | runs on every prompt | Adds the writing rule when the prompt is about writing. |
@@ -36,11 +38,17 @@ Impeccable is not in this repo. It installs from its own source:
 npx impeccable install --providers=codex --scope=global
 ```
 
+The measured gate in `design-sense` (`tools/load-budget.ts`) needs bun and Playwright's Chromium. Its packages are not in this repo. Install them once:
+
+```bash
+cd ~/.agents/skills/design-sense/tools && bun install
+```
+
 ## Tested
 
 On Codex 0.169 with DeepSeek flash through OpenRouter, in a throwaway Codex home:
 
-- Codex found the three skills.
+- Codex found all seven skills.
 - All three prompt hooks added their context.
 - The humanizer gate blocked a commit with a "not just X, but Y" message, and no commit was made.
 
@@ -49,3 +57,4 @@ Not tested:
 - `concept-check.py` inside Codex. It passes when fed a sample call by hand. I could not make Codex spawn an agent to trigger it.
 - The Codex panel in VS Code. Every test ran through `codex exec` in a terminal.
 - Impeccable's installer for Codex.
+- The `design-sense` measuring tools under Codex. Only the skill text was checked to load.
