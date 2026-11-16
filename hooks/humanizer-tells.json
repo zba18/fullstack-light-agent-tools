@@ -1,0 +1,194 @@
+{
+  "note": "The machine-checkable part of the humanizer skill (~/.claude/skills/humanizer/SKILL.md, blader/humanizer v4.0.0). One source, read by ~/.claude/hooks/humanizer-gate.py (prompts, publishes, commits, edits via copy-guard.py), rival/scripts/content-gate.ts, rival/src/rules.ts letterLint, 7ayd personas-gate.mjs and prepublish.ts. Ids are the skill's section numbers. strong = act on one sighting; weak = count only, a gate trips at weakLimit distinct weak hits. Regexes are case-insensitive. Triads, rhythm, wrong reader and voice can't be regexed: the skill itself covers those.",
+  "skillVersion": "4.0.0",
+  "weakLimit": 4,
+  "tells": [
+    {
+      "id": "H1",
+      "name": "Not X but Y",
+      "strength": "strong",
+      "patterns": [
+        "\\bnot (just|only|merely|simply) [^.;:!?]{1,60}?,? but\\b",
+        "\\b(it|this|that)(?:'s| is) not (about )?[^.;:!?]{1,40}[,;] (it|this|that)(?:'s| is)\\b",
+        "\\b(does not|doesn't) mean [^.]{1,80}\\. It means\\b",
+        "\\bisn't (just |only )?about [^.]{1,60}\\. It's about\\b"
+      ]
+    },
+    {
+      "id": "H2",
+      "name": "One-line closer or dramatic fragment",
+      "strength": "strong",
+      "patterns": [
+        "\\blet that sink in\\b",
+        "\\bread that again\\b",
+        "\\bthat(?:'s| is) the real (win|point|story|lesson)\\b",
+        "\\bthat distinction matters\\b",
+        "\\bthe message (was|is) clear\\b",
+        "\\band that changes everything\\b",
+        "\\b(\\w+)\\. single\\. (\\w+)\\b"
+      ]
+    },
+    {
+      "id": "H3",
+      "name": "Saying that sounds deep",
+      "strength": "strong",
+      "patterns": [
+        "\\bthe real question is\\b",
+        "\\bat its core\\b",
+        "\\bwhat really matters\\b",
+        "\\bthe heart of the matter\\b",
+        "\\bthe deeper issue\\b"
+      ]
+    },
+    {
+      "id": "H4",
+      "name": "Staged run-up before the point",
+      "strength": "strong",
+      "patterns": [
+        "\\blet(?:'s| us) (dive|delve|jump) in\\b",
+        "\\blet(?:'s| us) (explore|unpack|break (this|it) down)\\b",
+        "\\bhere(?:'s| is) what you need to know\\b",
+        "\\bwithout further ado\\b",
+        "\\bhere(?:'s| is) the thing\\b",
+        "(^|[.!?]\\s+)the thing is,",
+        "\\blet's be honest\\b",
+        "\\breal talk\\b",
+        "(^|[.!?]\\s+)honestly\\?"
+      ]
+    },
+    {
+      "id": "H5",
+      "name": "Arguing with no one",
+      "strength": "strong",
+      "patterns": [
+        "\\bdon't get me wrong\\b",
+        "\\bi'm not saying\\b",
+        "\\bthis is not to say\\b",
+        "\\bone might be tempted\\b",
+        "\\ba tempting approach would be\\b"
+      ]
+    },
+    {
+      "id": "H8",
+      "name": "Dash as the universal connector",
+      "strength": "strong",
+      "why": "em dash, en dash outside a range (2024–2026 and 1 Jan – 31 Dec stay), or spaced double hyphen: use a period, comma, colon or parentheses",
+      "patterns": [
+        "—",
+        "(?<=\\s)–(?!\\s?(\\d|(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\\b))",
+        "–(?=\\s)(?!\\s?(\\d|(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\\b))",
+        "(?<=\\s)--(?=\\s)"
+      ]
+    },
+    {
+      "id": "H12",
+      "name": "Stock AI word",
+      "strength": "strong",
+      "patterns": [
+        "\\bdelv(e|es|ed|ing)\\b",
+        "\\btapestr(y|ies)\\b",
+        "\\btestament\\b",
+        "\\bmeticulous(ly)?\\b",
+        "\\bintricacies\\b",
+        "\\binterplay\\b",
+        "\\bunderscor(e|es|ed|ing)\\b",
+        "\\bshowcas(e|es|ed|ing)\\b",
+        "\\bgarner(s|ed|ing)?\\b"
+      ]
+    },
+    {
+      "id": "H12w",
+      "name": "AI-frequent word",
+      "strength": "weak",
+      "patterns": [
+        "\\bcrucial\\b",
+        "\\bpivotal\\b",
+        "\\brobust\\b",
+        "\\benhanc(e|es|ed|ing)\\b",
+        "\\bvibrant\\b",
+        "\\blandscape\\b",
+        "\\bhighlight(s|ed|ing)?\\b",
+        "\\badditionally\\b",
+        "\\bvaluable\\b",
+        "\\bquietly\\b",
+        "\\benduring\\b",
+        "\\balign(s|ed)? with\\b",
+        "\\bbolster(s|ed|ing)?\\b",
+        "\\bseamless(ly)?\\b",
+        "\\bleverag(e|es|ed|ing)\\b",
+        "\\bfoster(s|ed|ing)?\\b"
+      ]
+    },
+    {
+      "id": "H13",
+      "name": "Inflated significance",
+      "strength": "strong",
+      "patterns": [
+        "\\bstands as a\\b",
+        "\\bplays? an? (key|crucial|pivotal|vital) role\\b",
+        "\\ba (pivotal|crucial) moment\\b",
+        "\\bevolving landscape\\b",
+        "\\bindelible mark\\b",
+        "\\bthe future looks bright\\b",
+        "\\bexciting times (lie )?ahead\\b",
+        "\\bsetting the stage for\\b",
+        "\\b(enduring|lasting) legacy\\b",
+        "\\ba step in the right direction\\b",
+        "\\bcontinues to thrive\\b"
+      ]
+    },
+    {
+      "id": "H16",
+      "name": "Sales language",
+      "strength": "weak",
+      "patterns": [
+        "\\bnestled\\b",
+        "\\bbreathtaking\\b",
+        "\\bmust-visit\\b",
+        "\\bin the heart of\\b",
+        "\\bstunning\\b",
+        "\\brenowned\\b",
+        "\\bgroundbreaking\\b",
+        "\\bdiverse array\\b"
+      ]
+    },
+    {
+      "id": "H18",
+      "name": "Avoiding is, are and has",
+      "strength": "weak",
+      "patterns": [
+        "\\bserves as\\b",
+        "\\bfunctions as\\b",
+        "\\bboasts\\b"
+      ]
+    },
+    {
+      "id": "H22",
+      "name": "Chatbot residue",
+      "strength": "strong",
+      "patterns": [
+        "\\bi hope this helps\\b",
+        "\\bgreat question\\b",
+        "(^|[.!?]\\s+)(certainly|of course|absolutely)!",
+        "\\byou're absolutely right\\b",
+        "\\blet me know if you('d| would) like (me|more)\\b",
+        "\\bwould you like me to\\b",
+        "\\bfeel free to (ask|reach out)\\b",
+        "\\bhappy to help\\b"
+      ]
+    },
+    {
+      "id": "H23",
+      "name": "Knowledge-limit disclaimer",
+      "strength": "strong",
+      "patterns": [
+        "\\bas of my (last|latest) (training|knowledge|update)\\b",
+        "\\bup to my last training\\b",
+        "\\bwhile specific details are (limited|scarce)\\b",
+        "\\bnot (widely|extensively|publicly) documented\\b",
+        "\\bbased on (the )?available information\\b",
+        "\\bmaintains a low profile\\b"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+# Codex on OpenRouter. This goes in ~/.codex/config.toml.
+# The CLI and the VS Code extension both read that file.
+# Codex ignores provider settings in a project's .codex/config.toml.
+
+model = "~deepseek/deepseek-flash-latest"   # any OpenRouter model id works here
+model_provider = "openrouter"
+model_reasoning_effort = "medium"
+
+[model_providers.openrouter]
+name = "OpenRouter"
+base_url = "https://openrouter.ai/api/v1"
+wire_api = "responses"
+supports_websockets = false
+
+# Codex runs this command and uses what it prints as the API key.
+# It reads the key from the macOS Keychain, so the key sits in no file
+# and VS Code needs no environment variable.
+[model_providers.openrouter.auth]
+command = "/usr/bin/security"
+args = ["find-generic-password", "-s", "openrouter-codex", "-w"]
