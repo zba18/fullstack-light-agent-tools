@@ -1,6 +1,6 @@
 # Fullstack light agent tools
 
-These are the checks I run on work a coding agent does for me. Each one comes from a mistake I kept catching by hand, so I wrote it down once and let the agent run it every time. They fall into three groups.
+Coding agents fail in a few predictable ways. These are the pitfalls I see most often and the countermeasure I run against each, in three groups.
 
 ## 1. Clear, concise output
 
