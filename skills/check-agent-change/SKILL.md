@@ -1,10 +1,10 @@
 ---
-name: pre-pr
-description: Preflight for a change that an AI agent wrote, before it becomes a PR. A script takes readings from the diff (scope, size, mutation score, outside callers, the ask's done-when checks, the agent's claims), then the reviewer judges the change against ten failure modes, each with evidence, and ends in READY, FIX FIRST or SEND BACK. Use when an agent says a change is done, before opening a PR, or when the user types /pre-pr.
+name: check-agent-change
+description: Checks a change that an AI agent wrote against what was asked, before it becomes a PR. A script takes readings from the diff (scope, size, mutation score, outside callers, the ask's done-when checks, the agent's claims), then the reviewer judges the change against ten failure modes, each with evidence, and ends in READY, FIX FIRST or SEND BACK. Use when an agent says a change is done, before opening a PR, or when the user asks to check an agent's change.
 argument-hint: "[spec path] [agent summary path] [base branch]"
 ---
 
-# Pre-PR
+# Check an agent's change
 
 ## Goal
 
@@ -47,7 +47,7 @@ A finding blocks only when a done-when check fails in substance or the change de
 ## Verdict
 
 ```
-PRE-PR: READY | FIX FIRST | SEND BACK
+CHANGE CHECK: READY | FIX FIRST | SEND BACK
 modes     1 pass · 2 FAIL · 3 pass · ...
 readings  <the script's READINGS line>
 fix       <numbered, file:line, with the command and output that shows it>
