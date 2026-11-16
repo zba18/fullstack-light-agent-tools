@@ -1,6 +1,35 @@
 # Codex kit
 
-My skills and hooks from Claude Code, ported to Codex.
+These are the checks I run on work a coding agent does for me. Each one comes from a mistake I kept catching by hand, so I wrote it down once and let the agent run it every time. They fall into three groups.
+
+## 1. Writing that sounds like a person
+
+Agents write in a recognisable voice: staged contrasts, one-line closers, dashes everywhere, inflated words. I remove it from anything another person will read.
+
+- `humanizer` is the skill that does the rewriting. It is a copy of the public `blader/humanizer` skill.
+- `humanizer-gate.py` makes sure it runs. It reminds the agent when a prompt is about writing, and it blocks a commit or PR whose text still has those patterns.
+
+## 2. Visual checks
+
+Agents are still poor judges of how a page looks, and checking by eye costs me the most time. So I give the agent three rules and two ways to test them.
+
+- `design-sense` holds the rules: the first screen gives one clear impression, every element has a job, and the page has one high point and a deliberate ending.
+- `first-impression`, `cognitive-load` and `peak-end` each work through one rule.
+- `design-sense/tools/load-budget.ts` measures a page's first screen in a real browser: words, buttons, fonts, colours, text contrast, layout jumps. Each number passes, warns or fails against a budget.
+- The blind test shows screenshots to a fresh agent that has never seen the brief and asks what the page is, how it feels and what looks broken.
+- `design-nudge.py` puts the three rules into the prompt whenever I ask for page work.
+
+Impeccable does the building and installs from its own source.
+
+## 3. Engineering blind spots
+
+An agent will say a change is done when it is not, build more than was asked, and write tests that cannot fail. These checks are reminders to look in the places where that happens.
+
+- `pre-pr` reviews a change before it becomes a PR. A fresh agent that did not write the change reads the ask, runs a script that takes readings from the diff (scope, size, whether the tests notice broken code, what else uses the changed code), and judges the change against ten failure modes. It ends in READY, FIX FIRST or SEND BACK.
+- `deepen` runs before a large, open-ended ask. It makes the agent name the source material, the method and an outside check before it starts. `deepen-gate.py` flags the prompts that need it.
+- `concept-check.py` blocks a long brief to a sub-agent unless it says what I approved, so a big build never starts from an idea I have not seen.
+
+I tested `pre-pr` on 24 changes with planted faults, on Claude and on Codex with DeepSeek. It caught every fault, and so did a plain review by a fresh agent that had the ask and could run the code. So the skill finds no more than a careful plain review does. Its job is to make that review the same every time.
 
 ## Install
 
@@ -12,49 +41,28 @@ git clone <this repo> codex-kit
 ./codex-kit/install.sh
 ```
 
-Then open Codex, type `/hooks` and approve the five hooks. Codex skips a hook until you approve it, and asks again whenever its command changes.
+Then open Codex, type `/hooks` and approve the five hooks. Codex skips a hook until you approve it.
 
-The script needs `python3` for the hooks and `node` for the `pre-pr` scripts. It keeps any skill or `config.toml` you already have. `--force` replaces the skills.
+The script copies the skills to `~/.agents/skills` and the hooks to `~/.codex`. It needs `python3` for the hooks and `node` for the `pre-pr` scripts, and it keeps any skill or `config.toml` you already have. `--force` replaces the skills.
 
-## What it installs
-
-| What | Where it goes | What it does |
-|---|---|---|
-| `pre-pr` skill | `~/.agents/skills/pre-pr` | Reviews a change an agent wrote before it becomes a PR. Type `$pre-pr`. |
-| `deepen` skill | `~/.agents/skills/deepen` | Makes a complex ask deeper before doing it. |
-| `humanizer` skill | `~/.agents/skills/humanizer` | Rewrites text that sounds like AI. A copy of `blader/humanizer` (MIT). |
-| `design-sense` skill | `~/.agents/skills/design-sense` | The three design laws and their gates, for pages a visitor judges at a glance. It sends app screens elsewhere. |
-| `first-impression`, `cognitive-load`, `peak-end` skills | `~/.agents/skills/<name>` | One skill per design law. `design-sense` routes to them. |
-| `deepen-gate.py` | runs on every prompt | Flags a complex ask and points Codex at `deepen`. `deep:` forces it, `quick:` skips it. |
-| `design-nudge.py` | runs on every prompt | Adds the three design laws when the prompt is about a page. |
-| `humanizer-gate.py prompt` | runs on every prompt | Adds the writing rule when the prompt is about writing. |
-| `humanizer-gate.py pre` | runs before shell commands | Blocks a `git commit` or `gh pr` whose text still has AI tells. |
-| `concept-check.py` | runs before an agent is spawned | Blocks a long agent brief with no `Concept check:` line. |
-| `config.toml` | `~/.codex/config.toml`, only if you have none | Runs Codex on OpenRouter. The key is read from the macOS Keychain item `openrouter-codex`. |
-
-Impeccable is not in this repo. It installs from its own source:
+Two extras install separately:
 
 ```bash
 npx impeccable install --providers=codex --scope=global
 ```
 
-The measured gate in `design-sense` (`tools/load-budget.ts`) needs bun and Playwright's Chromium. Its packages are not in this repo. Install them once:
-
 ```bash
 cd ~/.agents/skills/design-sense/tools && bun install
 ```
 
+`config.toml` runs Codex on OpenRouter and is installed only when you have no config. It reads the key from the macOS Keychain item `openrouter-codex`.
+
 ## Tested
 
-On Codex 0.169 with DeepSeek flash through OpenRouter, in a throwaway Codex home:
+On Codex 0.169 with DeepSeek flash through OpenRouter:
 
 - Codex found all seven skills.
-- All three prompt hooks added their context.
-- The humanizer gate blocked a commit with a "not just X, but Y" message, and no commit was made.
+- The three prompt hooks added their context.
+- The humanizer gate blocked a commit with a "not just X, but Y" message.
 
-Not tested:
-
-- `concept-check.py` inside Codex. It passes when fed a sample call by hand. I could not make Codex spawn an agent to trigger it.
-- The Codex panel in VS Code. Every test ran through `codex exec` in a terminal.
-- Impeccable's installer for Codex.
-- The `design-sense` measuring tools under Codex. Only the skill text was checked to load.
+Not tested: `concept-check.py` inside Codex, the Codex panel in VS Code, Impeccable's Codex installer, and the `design-sense` measuring tools under Codex.
