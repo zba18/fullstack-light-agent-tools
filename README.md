@@ -2,14 +2,22 @@
 
 These are the checks I run on work a coding agent does for me. Each one comes from a mistake I kept catching by hand, so I wrote it down once and let the agent run it every time. They fall into three groups.
 
-## 1. Writing that sounds like a person
+## 1. Clear, concise output
 
 Agents write in a recognisable voice: staged contrasts, one-line closers, dashes everywhere, inflated words. I remove it from anything another person will read.
 
 - `humanizer` is the skill that does the rewriting. It is a copy of the public `blader/humanizer` skill.
 - `humanizer-gate.py` makes sure it runs. It reminds the agent when a prompt is about writing, and it blocks a commit or PR whose text still has those patterns. It also checks any file on request: `python3 hooks/humanizer-gate.py check docs/pr.md`.
 
-## 2. Visual checks
+## 2. Prompting blind spots
+
+An agent builds what the prompt says, and a prompt leaves things out. These three checks sit where that goes wrong: before the work starts, when work is handed to a sub-agent, and when the agent says it is done.
+
+- `deepen` runs before a large, open-ended ask. It makes the agent name the source material, the method and an outside check before it starts. `deepen-gate.py` flags the prompts that need it.
+- `concept-check.py` blocks a long brief to a sub-agent unless it says what I approved, so a big build never starts from an idea I have not seen.
+- `review-agent-pr` reviews a change against what was asked, before it becomes a PR. A fresh agent that did not write the change reads the ask, runs a script that takes readings from the diff (scope, size, whether the tests notice broken code, what else uses the changed code), and judges the change against ten failure modes. It ends in READY, FIX FIRST or SEND BACK.
+
+## 3. Visual checks
 
 Agents are still poor judges of how a page looks, and checking by eye costs me the most time. So I give the agent three rules and two ways to test them.
 
@@ -21,18 +29,10 @@ Agents are still poor judges of how a page looks, and checking by eye costs me t
 
 Impeccable does the building and installs from its own source.
 
-## 3. Engineering blind spots
-
-An agent will say a change is done when it is not, build more than was asked, and write tests that cannot fail. These checks are reminders to look in the places where that happens.
-
-- `review-agent-pr` reviews a change against what was asked, before it becomes a PR. A fresh agent that did not write the change reads the ask, runs a script that takes readings from the diff (scope, size, whether the tests notice broken code, what else uses the changed code), and judges the change against ten failure modes. It ends in READY, FIX FIRST or SEND BACK.
-- `deepen` runs before a large, open-ended ask. It makes the agent name the source material, the method and an outside check before it starts. `deepen-gate.py` flags the prompts that need it.
-- `concept-check.py` blocks a long brief to a sub-agent unless it says what I approved, so a big build never starts from an idea I have not seen.
-
 ## Install
 
 ```bash
-git clone <this repo> fullstack-light-agent-tools
+git clone https://github.com/zba18/fullstack-light-agent-tools.git
 ```
 
 ```bash
