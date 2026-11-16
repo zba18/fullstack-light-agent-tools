@@ -14,7 +14,7 @@ FORCE=0
 [ "${1:-}" = "--force" ] && FORCE=1
 
 command -v python3 >/dev/null || { echo "python3 is missing and the hooks need it"; exit 1; }
-command -v node >/dev/null || echo "note    node is missing; the check-agent-change scripts need it"
+command -v node >/dev/null || echo "note    node is missing; the review-agent-pr scripts need it"
 
 mkdir -p "$SKILLS_DIR" "$CODEX_HOME/hooks"
 

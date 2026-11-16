@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Change check readings: the mechanical half of the review. It reads everything
+// PR review readings: the mechanical half of the review. It reads everything
 // this branch changed and files what it finds under the review's questions.
 // No dependencies. Run from anywhere inside the repo.
 //
@@ -340,7 +340,7 @@ const claims = summaryArg && fs.existsSync(summaryArg)
 
 // ---------- report ----------
 const newFiles = changed.filter((f) => f.status === 'A');
-console.log(`CHANGE CHECK READINGS  base ${base}@${git('rev-parse', '--short', mergeBase)}  ${changed.length} files (${newFiles.length} new)  +${changed.reduce((n, f) => n + f.add, 0)} −${changed.reduce((n, f) => n + f.del, 0)}`);
+console.log(`PR REVIEW READINGS  base ${base}@${git('rev-parse', '--short', mergeBase)}  ${changed.length} files (${newFiles.length} new)  +${changed.reduce((n, f) => n + f.add, 0)} −${changed.reduce((n, f) => n + f.del, 0)}`);
 console.log(`added lines: source ${sourceAdded} · tests ${sum('test')} · evals ${sum('eval')} · docs ${sum('doc')} · config ${sum('config')}`);
 console.log(`ask: ${specPath ?? 'none'}${protectedPaths.length ? `   protected: ${protectedPaths.join(', ')}` : ''}`);
 

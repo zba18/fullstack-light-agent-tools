@@ -25,7 +25,7 @@ Impeccable does the building and installs from its own source.
 
 An agent will say a change is done when it is not, build more than was asked, and write tests that cannot fail. These checks are reminders to look in the places where that happens.
 
-- `check-agent-change` checks a change against what was asked, before it becomes a PR. A fresh agent that did not write the change reads the ask, runs a script that takes readings from the diff (scope, size, whether the tests notice broken code, what else uses the changed code), and judges the change against ten failure modes. It ends in READY, FIX FIRST or SEND BACK.
+- `review-agent-pr` reviews a change against what was asked, before it becomes a PR. A fresh agent that did not write the change reads the ask, runs a script that takes readings from the diff (scope, size, whether the tests notice broken code, what else uses the changed code), and judges the change against ten failure modes. It ends in READY, FIX FIRST or SEND BACK.
 - `deepen` runs before a large, open-ended ask. It makes the agent name the source material, the method and an outside check before it starts. `deepen-gate.py` flags the prompts that need it.
 - `concept-check.py` blocks a long brief to a sub-agent unless it says what I approved, so a big build never starts from an idea I have not seen.
 
@@ -41,7 +41,7 @@ git clone <this repo> codex-kit
 
 Then open Codex, type `/hooks` and approve the five hooks. Codex skips a hook until you approve it.
 
-The script copies the skills to `~/.agents/skills` and the hooks to `~/.codex`. It needs `python3` for the hooks and `node` for the `check-agent-change` scripts, and it keeps any skill or `config.toml` you already have. `--force` replaces the skills.
+The script copies the skills to `~/.agents/skills` and the hooks to `~/.codex`. It needs `python3` for the hooks and `node` for the `review-agent-pr` scripts, and it keeps any skill or `config.toml` you already have. `--force` replaces the skills.
 
 Two extras install separately:
 
