@@ -1,4 +1,4 @@
-# Codex kit
+# Fullstack light agent tools
 
 These are the checks I run on work a coding agent does for me. Each one comes from a mistake I kept catching by hand, so I wrote it down once and let the agent run it every time. They fall into three groups.
 
@@ -7,7 +7,7 @@ These are the checks I run on work a coding agent does for me. Each one comes fr
 Agents write in a recognisable voice: staged contrasts, one-line closers, dashes everywhere, inflated words. I remove it from anything another person will read.
 
 - `humanizer` is the skill that does the rewriting. It is a copy of the public `blader/humanizer` skill.
-- `humanizer-gate.py` makes sure it runs. It reminds the agent when a prompt is about writing, and it blocks a commit or PR whose text still has those patterns. It also checks any file on request: `python3 ~/.codex/hooks/humanizer-gate.py check docs/pr.md`.
+- `humanizer-gate.py` makes sure it runs. It reminds the agent when a prompt is about writing, and it blocks a commit or PR whose text still has those patterns. It also checks any file on request: `python3 hooks/humanizer-gate.py check docs/pr.md`.
 
 ## 2. Visual checks
 
@@ -32,35 +32,11 @@ An agent will say a change is done when it is not, build more than was asked, an
 ## Install
 
 ```bash
-git clone <this repo> codex-kit
+git clone <this repo> fullstack-light-agent-tools
 ```
 
 ```bash
-./codex-kit/install.sh
+./fullstack-light-agent-tools/install.sh
 ```
 
-Then open Codex, type `/hooks` and approve the five hooks. Codex skips a hook until you approve it.
-
-The script copies the skills to `~/.agents/skills` and the hooks to `~/.codex`. It needs `python3` for the hooks and `node` for the `review-agent-pr` scripts, and it keeps any skill or `config.toml` you already have. `--force` replaces the skills.
-
-Two extras install separately:
-
-```bash
-npx impeccable install --providers=codex --scope=global
-```
-
-```bash
-cd ~/.agents/skills/design-sense/tools && bun install
-```
-
-`config.toml` runs Codex on OpenRouter and is installed only when you have no config. It reads the key from the macOS Keychain item `openrouter-codex`.
-
-## Tested
-
-On Codex 0.169 with DeepSeek flash through OpenRouter:
-
-- Codex found all seven skills.
-- The three prompt hooks added their context.
-- The humanizer gate blocked a commit with a "not just X, but Y" message.
-
-Not tested: `concept-check.py` inside Codex, the Codex panel in VS Code, Impeccable's Codex installer, and the `design-sense` measuring tools under Codex.
+The script copies the skills and hooks into place, keeps anything you already have, and prints the few steps left to do by hand. It needs `python3` and `node`.

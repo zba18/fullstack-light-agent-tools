@@ -74,4 +74,6 @@ Left to do by hand:
        security add-generic-password -a "$USER" -s openrouter-codex -w
   3. Impeccable installs from its own source:
        npx impeccable install --providers=codex --scope=global
+  4. The page-measuring script in design-sense needs its packages once:
+       cd ~/.agents/skills/design-sense/tools && bun install
 NEXT
