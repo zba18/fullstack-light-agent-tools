@@ -4,7 +4,19 @@ Coding agents fail in a few predictable ways. These are the pitfalls I see most 
 
 ## 1. Clear, concise output
 
-Agents write in a recognisable voice: staged contrasts, one-line closers, dashes everywhere, inflated words. I remove it from anything another person will read.
+Agent output tends to read unnaturally. The same habits show up in almost everything an agent writes:
+
+- contrasts that argue with a claim nobody made ("it's not X, it's Y")
+- one-line closers that repeat the point ("That is the real win.")
+- a run-up before the point ("Let's dive in", "Here's the thing")
+- ideas forced into groups of three
+- dashes used to join any two clauses
+- ordinary facts inflated into turning points ("a pivotal moment")
+- stock words such as "crucial", "robust" and "showcase"
+- stacked qualifiers ("could potentially", "might arguably")
+- a bold label on every item, and leftover chat phrases
+
+I remove these from anything another person will read.
 
 - `humanizer` is the skill that does the rewriting. It is a copy of the public `blader/humanizer` skill.
 - `humanizer-gate.py` makes sure it runs. It reminds the agent when a prompt is about writing, and it blocks a commit or PR whose text still has those patterns. It also checks any file on request: `python3 hooks/humanizer-gate.py check docs/pr.md`.
