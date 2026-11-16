@@ -48,6 +48,7 @@ run = lambda script, arg='', status='': {
 print(json.dumps({'hooks': {
     'UserPromptSubmit': [{'hooks': [
         run('deepen-gate.py'),
+        run('build-gate.py'),
         run('design-nudge.py'),
         run('humanizer-gate.py', 'prompt'),
     ]}],
@@ -57,7 +58,7 @@ print(json.dumps({'hooks': {
     ],
 }}, indent=2))
 PY
-echo "hooks   $CODEX_HOME/hooks.json written (3 on each prompt, 2 before tool calls)"
+echo "hooks   $CODEX_HOME/hooks.json written (4 on each prompt, 2 before tool calls)"
 
 if [ -f "$CODEX_HOME/config.toml" ]; then
   echo "config  $CODEX_HOME/config.toml already there, kept"
@@ -69,7 +70,7 @@ fi
 cat <<'NEXT'
 
 Left to do by hand:
-  1. In Codex, type /hooks and approve the five hooks. They do not run until you do.
+  1. In Codex, type /hooks and approve the six hooks. They do not run until you do.
   2. If you use the OpenRouter config on a new Mac, store the key once:
        security add-generic-password -a "$USER" -s openrouter-codex -w
   3. Impeccable installs from its own source:
