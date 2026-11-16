@@ -1,9 +1,9 @@
 ---
-name: plan-before-build
+name: rough-feature-planning
 description: Stops a feature build until the person has approved two things, a concept check (one frame and one line) and a software design plan (where it fits in the program, data model, interfaces, files, done-when checks). Use before building any new feature, page, workflow or agent tool, when the build-gate hook flags a prompt, or when the user asks for a concept check or a design plan. Small fixes skip it.
 ---
 
-# Plan before build
+# Rough feature planning
 
 A build that starts without the person's go on the idea risks a whole wasted cycle. Two cheap stops prevent that. Each stop ends your turn: show the thing, ask one question (go, or change?), and write no code until the answer is go.
 

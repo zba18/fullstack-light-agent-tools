@@ -14,7 +14,7 @@ Agent output tends to read unnaturally: contrasts that argue with a claim nobody
 An agent builds what the prompt says, and a prompt leaves things out. These checks sit where that goes wrong: before the work starts, before any code is written, when work is handed to a sub-agent, and when the agent says it is done.
 
 - `deepen` runs before a large, open-ended ask. It makes the agent name the source material, the method and an outside check before it starts. `deepen-gate.py` flags the prompts that need it.
-- `plan-before-build` stops a feature build until I have approved two things. The first is a concept check: one frame I can look at and one line on who it is for. The second is a design plan: where the feature fits in the program, the data model, the interfaces, the files and the done-when checks. `build-gate.py` triggers it on any prompt that asks for a build.
+- `rough-feature-planning` stops a feature build until I have approved two things. The first is a concept check: one frame I can look at and one line on who it is for. The second is a design plan: where the feature fits in the program, the data model, the interfaces, the files and the done-when checks. `build-gate.py` triggers it on any prompt that asks for a build.
 - `concept-check.py` blocks a long brief to a sub-agent unless it says what I approved, so a big build never starts from an idea I have not seen.
 - `review-agent-pr` reviews a change against what was asked, before it becomes a PR. A fresh agent that did not write the change reads the ask, runs a script that takes readings from the diff (scope, size, whether the tests notice broken code, what else uses the changed code), and judges the change against ten failure modes. It ends in READY, FIX FIRST or SEND BACK.
 

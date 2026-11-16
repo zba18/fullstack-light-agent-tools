@@ -53,7 +53,7 @@ Out of scope: <anything bigger the professional would also do>
 
 - Show the four answers and the rewritten ask in about 15 lines. No preamble.
 - Then carry out the rewritten ask in the same turn. A build is the exception: hand the
-  rewritten ask to the `plan-before-build` skill, which stops for a go before any code.
+  rewritten ask to the `rough-feature-planning` skill, which stops for a go before any code.
 - Stop and ask once (one question, recommended option first) only when the
   deepening surfaced a call that belongs to the user: money, scope, access you lack,
   or an action that is hard to undo.

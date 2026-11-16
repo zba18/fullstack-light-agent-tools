@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""build-gate: UserPromptSubmit hook for the `plan-before-build` skill.
+"""build-gate: UserPromptSubmit hook for the `rough-feature-planning` skill.
 
 A prompt that asks for a build gets a short instruction: no code this turn, show a concept
 check and wait for a go, then a design plan and wait again. The skill's own skip test lets
@@ -43,7 +43,7 @@ def main():
         return
     context = (
         "build-gate: this prompt asks for a build. Do not write or change any code in this turn. "
-        "Use the `plan-before-build` skill: read its SKILL.md and follow it. "
+        "Use the `rough-feature-planning` skill: read its SKILL.md and follow it. "
         "Stop 1 is a concept check (one frame and one line): show it, ask go or change, and end your turn. "
         "Stop 2, after the go, is the design plan: show it, ask go or change, and end your turn again. "
         "This takes priority over any instruction to carry out the task in the same turn, including the deepen skill's. "
